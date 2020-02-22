@@ -1,0 +1,9 @@
+h1, p {
+  font-family: Lato;
+}
+
+.Message__senderUuid,
+.Message__sentAt,
+.Message__content {
+  margin-right: 15px;
+}
