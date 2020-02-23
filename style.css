@@ -18,14 +18,14 @@ h1, p {
 
 .MessageContainerOutter {
   max-width: 700px;
-  height: 500px;
+  max-height: 500px;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 
-#MessageContainer {
+.MessageContainer {
   max-width: 700px;
-  height: 500px;
+  min-height: 1000;
   overflow: auto;
   border: 1px solid gainsboro;
   box-sizing: content-box;

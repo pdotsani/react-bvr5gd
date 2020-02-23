@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import BottomScrollListener from 'react-bottom-scroll-listener';
 import './style.css';
 
 import Message from "./Message/Message"
 
 import { 
   sortMessagesAscending, 
-  sortMessagesDescending } from "./helpers/messages";
+  sortMessagesDescending 
+} from "./helpers/messages";
 
 // This is the list of messages.
 import { messages } from './data.json';
@@ -20,50 +22,43 @@ class App extends Component {
       currPages: 2,
       pages: Math.floor(messages.length / 5)
     };
-
-    document.addEventListener("scroll", this.trackScroll)
   }
 
-  trackScroll = () => {
-    const { currPages, pages } = this.state;
-    const wrappedElement = document.getElementById('MessageContainer');
-    if (wrappedElement.scrollHeight - wrappedElement.scrollTop === wrappedElement.clientHeight && currPages !== pages) {
-      console.log('header bottom reached');
-      // document.removeEventListener('scroll', this.trackScrolling);
-      const idxOne = this.state.currPages * 5;
-      const idxTwo = idxOne + 5;
+  scrollDown = () => {
+    const { currPages, pages, visible, filteredMessages } = this.state;
+    if(currPages !== pages) {
+      const newCurr = currPages + 1;
+      const currIdx = currPages * 5;
+      const idx = newCurr * 5;
       this.setState({ 
-        visible: [...this.state.visible, ...this.state.filteredMessages.slice(idxOne, idxTwo)],
-        currPages: this.state.currPages + 1
+        visible: [...visible, ...filteredMessages.slice(currIdx, idx)],
+        currPages: newCurr
       });
-      console.log(this.state);
-      console.log(wrappedElement.scrollHeight);
     }
   }
 
   setAscendingOrder = () => {
     const { filteredMessages, currPages } = this.state;
     const ascendingOrderFiltered = sortMessagesAscending(filteredMessages);
-    const idx = currPages*5;
+    const idx = currPages * 5;
     this.setState({ 
       filteredMessages: ascendingOrderFiltered,
-      vsible: [...ascendingOrderFiltered.slice(0, idx)]
+      visible: [...ascendingOrderFiltered.slice(0, idx)]
     });
   }
 
   setDescendingOrder = () => {
     const { filteredMessages, currPages } = this.state;
     const descendingOrderFiltered = sortMessagesDescending(filteredMessages);
-    const idx = currPages*5;
+    const idx = currPages * 5;
     this.setState({ 
       filteredMessages: descendingOrderFiltered,
-      vsible: [...descendingOrderFiltered.slice(0, idx)]
+      visible: [...descendingOrderFiltered.slice(0, idx)]
     });
   }
 
   render() {
     const { visible } = this.state;
-    // console.log(this.state);
     return (
       <div>
         <div className="FilterContainer">
@@ -74,20 +69,27 @@ class App extends Component {
             className="Button"
             onClick={this.setDescendingOrder}>Dsc</button>
         </div>
-        <div className="MessageContainerOutter">
-          <div id="MessageContainer">
-          {
-            visible.map((msg, idx) => 
-              <Message
-                key={`message-id-${idx}`}
-                senderUuid={msg.senderUuid} 
-                sentAt={msg.sentAt}
-                content={msg.content}
-              />
-            ) 
+        <BottomScrollListener onBottom={this.scrollDown}>
+          {scrollRef =>(
+            <div ref={scrollRef}className="MessageContainerOutter">
+              <div 
+                className="MessageContainer"
+                >
+              {
+                visible.map((msg, idx) => 
+                  <Message
+                    key={`message-id-${idx}`}
+                    senderUuid={msg.senderUuid} 
+                    sentAt={msg.sentAt}
+                    content={msg.content}
+                  />
+                ) 
+              }
+              </div>
+            </div>
+            )
           }
-          </div>
-        </div>
+        </BottomScrollListener>
       </div>
     )
   }
