@@ -37,6 +37,17 @@ class App extends Component {
     }
   }
 
+  deleteMessage = (idx, msg) => {
+    const { visible, filteredMessages, currPages } = this.state;
+    const newFilteredMessages = filteredMessages.filter(fmsg =>
+      fmsg.sentAt !== msg.sentAt
+    );
+    this.setState({
+      filteredMessages: newFilteredMessages,
+      visible: [...visible.slice(0, idx), ...visible.slice(idx + 1)] 
+    });
+  }
+
   setAscendingOrder = () => {
     const { filteredMessages, currPages } = this.state;
     const ascendingOrderFiltered = sortMessagesAscending(filteredMessages);
@@ -71,20 +82,20 @@ class App extends Component {
         </div>
         <BottomScrollListener onBottom={this.scrollDown}>
           {scrollRef =>(
-            <div ref={scrollRef}className="MessageContainerOutter">
-              <div 
-                className="MessageContainer"
-                >
-              {
-                visible.map((msg, idx) => 
-                  <Message
-                    key={`message-id-${idx}`}
-                    senderUuid={msg.senderUuid} 
-                    sentAt={msg.sentAt}
-                    content={msg.content}
-                  />
-                ) 
-              }
+            <div 
+              className="MessageContainerOutter"
+              ref={scrollRef}>
+              <div className="MessageContainer">
+                {
+                  visible.map((msg, idx) => 
+                    <Message
+                      key={`message-id-${idx}`}
+                      senderUuid={msg.senderUuid} 
+                      sentAt={msg.sentAt}
+                      content={msg.content}
+                      del={this.deleteMessage.bind(this, idx, msg)} />
+                  ) 
+                }
               </div>
             </div>
             )

@@ -39,6 +39,12 @@ h1, p {
   flex-direction: column;
 }
 
+.Message__delete {
+  cursor: pointer;
+  font-size: 10px;
+  color: #d3d3d3;
+}
+
 .Message__stamp {
   width: 100%;
   margin-bottom: 5px;
