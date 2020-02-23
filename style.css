@@ -2,8 +2,60 @@ h1, p {
   font-family: Lato;
 }
 
-.Message__senderUuid,
-.Message__sentAt,
-.Message__content {
+.FilterContainer {
+  max-width: 700px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.Button {
+  height: 30px;
+  width: 50px;
+  background-color: transparent;
+  font-size: 18px;
   margin-right: 15px;
+}
+
+.MessageContainerOutter {
+  max-width: 700px;
+  height: 500px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+#MessageContainer {
+  max-width: 700px;
+  height: 500px;
+  overflow: auto;
+  border: 1px solid gainsboro;
+  box-sizing: content-box;
+  padding: 0 10px;
+}
+
+.Message {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Message__stamp {
+  width: 100%;
+  margin-bottom: 5px;
+  text-decoration: underline;
+}
+
+.Message__senderUuid {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.Message__sentAt {
+  color: gray;
+  font-size: 10px;
+  margin-right: 15px;
+}
+
+.Message__content {
+  width: 100%;
 }
