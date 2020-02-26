@@ -38,7 +38,7 @@ class App extends Component {
   }
 
   deleteMessage = (idx, msg) => {
-    const { visible, filteredMessages, currPages } = this.state;
+    const { visible, filteredMessages } = this.state;
     const newFilteredMessages = filteredMessages.filter(fmsg =>
       fmsg.sentAt !== msg.sentAt
     );
